@@ -12,6 +12,14 @@ export default class PetService {
         return axios.get(baseURL);
     }
 
+    addPet(body){
+        const config = {     
+            headers: { 
+                'content-type': 'multipart/form-data'
+             }
+        }
+        return axios.post(baseURL , body, config);
+    }
   /*  getPetById(id) {
       /*const config = {     
             headers: { 
