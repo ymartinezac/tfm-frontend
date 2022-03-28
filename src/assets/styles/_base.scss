@@ -1,0 +1,12 @@
+@import url("https://use.typekit.net/ztj7nxi.css");
+@import "./variables";
+
+h1, h2 {
+    font-family: kansasnew, serif;
+    font-style: normal;
+    font-weight: 700;
+    color: $darkBlue;
+}
+html, body {
+    margin: 0;
+}

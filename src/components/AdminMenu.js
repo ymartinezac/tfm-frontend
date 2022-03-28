@@ -11,9 +11,8 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = ["Pets", "Adoption Requests", "Users"];
+const settings = ["Profile", "Account", "Dashboard"];
 
 export const AdminMenu = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);

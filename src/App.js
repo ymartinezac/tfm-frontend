@@ -1,12 +1,11 @@
 import "./App.css";
-import { AdminMenu } from "./components/AdminMenu/AdminMenu";
+import AdminDashboard from "./components/AdminDashboard";
 function App() {
     return (
-        <div className="App">
-            <header>
-                <AdminMenu />
-            </header>
-        </div>
+        <main className="App">
+           <AdminDashboard />
+          
+        </main>
     );
 }
 

@@ -1,10 +1,9 @@
-import { Auth0Provider } from "@auth0/auth0-react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import App from "./App";
-import "./components/AdminMenu/AdminMenu.css";
-import "./index.css";
+import "./assets/styles/main.scss";
 import reportWebVitals from "./reportWebVitals";
 
 const theme = createTheme({
@@ -20,11 +19,13 @@ const theme = createTheme({
 });
 ReactDOM.render(
     <React.StrictMode>
-        <ThemeProvider theme={theme}>
-            <Auth0Provider domain="yeseniamartinez.eu.auth0.com" clientId="6NYGJmsQJVeKAraiUY4T5Qi14ivMWWOU" redirectUri="http://localhost:3000">
-                <App />
-            </Auth0Provider>
-        </ThemeProvider>
+        <Router>
+        
+                <ThemeProvider theme={theme}>
+                    <App />
+                </ThemeProvider>
+           
+        </Router>
     </React.StrictMode>,
     document.getElementById("root")
 );
