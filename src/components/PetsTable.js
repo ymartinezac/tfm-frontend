@@ -1,8 +1,10 @@
+import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import { DataGrid } from '@mui/x-data-grid';
 import React from 'react';
 import PetService from '../services/Pets';
 import PetForm from './PetForm';
+
 const columns = [
   
   { field: 'name', headerName: 'Name', width: 130, align: 'center' },
@@ -40,7 +42,10 @@ export default function PetsTable() {
         checkboxSelection
       />
 
-      <Button onClick={handleOpenModal} >Open Midal</Button>
+      <Button variant="contained" onClick={handleOpenModal}  endIcon={<AddIcon />}>
+        Add Pet
+      </Button>
+     
       {openModal &&
                 <PetForm toggleModal={handleOpenModal}/>
                 }
