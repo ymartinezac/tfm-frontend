@@ -1,8 +1,16 @@
 
 .pets-table {
     width: 100%;
-    height: 400;
+    height: 500;
     display: flex;
     justify-content: center;
     flex-direction: column;
+
+    h2 {
+        margin: 6px 0;
+    }
+
+    .btn-add-pet {
+        margin: 8px 0;
+    }
 }

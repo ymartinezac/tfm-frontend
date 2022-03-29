@@ -12,8 +12,10 @@ import Modal from '@mui/material/Modal';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import React from "react";
+import Dropzone from 'react-dropzone';
 import PetService from '../services/Pets';
-function PetForm({toggleModal}) {
+
+function PetForm({toggleModal, petId}) {
     const ps = new PetService();
     const [isOpen, setIsOpen] = React.useState(true);
     const [species, setSpecies] = React.useState('');
@@ -21,8 +23,32 @@ function PetForm({toggleModal}) {
     const [name, setName] = React.useState('');
     const [description, setDescription] = React.useState('');
     const [dob, setDOB] = React.useState(null);
+    const [petPhotoFile, setPetPhotoFile ] = React.useState([]);
+    const [petPhotoFilename, setPetPhotoFilename ] = React.useState('');
     const [kidsChecked, setKidsChecked] = React.useState(false);
     const [petsChecked, setPetsChecked] = React.useState(false);
+
+    React.useEffect(() => {
+      console.log(petId);
+      if(!(petId===null)){
+        console.log("🚀 ~ file: PetForm.js ~ line 33 ~ React.useEffect ~ petId", petId);
+        ps.getPetById(petId).then((res) => {
+          setName(res.data[0].name);
+          setDOB(res.data[0].dob);
+          setDescription(res.data[0].description);
+          setKidsChecked(res.data[0].kids_comp);
+          setPetsChecked(res.data[0].pets_comp);
+          setGender(res.data[0].gender);
+          setSpecies(res.data[0].species);
+          console.log('🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀');
+          console.log(res);
+          console.log('🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀');
+        });
+      }
+      
+    }, [petId, ps]);
+
+    const reload=()=>window.location.reload();
     const handleSpeciesChange = (event) => {
       setSpecies(event.target.value);
     };
@@ -30,33 +56,60 @@ function PetForm({toggleModal}) {
       setGender(event.target.value);
     };
 
+    const handleKidsCheckbox = (event) => {
+      setKidsChecked(!kidsChecked);
+    }
+
+    const handlePetsCheckbox = (event) => {
+      setPetsChecked(!petsChecked);
+    }
+
     const toggleIt = () => {
         setIsOpen(!isOpen);
+        
         toggleModal();
+        
     }
 
     const handleSubmit = () => {
-      let data = {
-        "name": name,
-        "species": species,
-        "gender": gender
-      };
+      
       let formData = new FormData();
-      formData.append('name', name);
-      formData.append('species', species);
-      formData.append('gender', gender);
-      ps.addPet(data).then((res) => {
-
+     
+      if(!petPhotoFile){
+        console.log('no file')
+      }
+      else {
+        formData.append('name', name);
+        formData.append('dob', dob);
+        formData.append('species', species);
+        formData.append('gender', gender);
+        formData.append('filename', petPhotoFilename);
+        formData.append('kids_comp', kidsChecked);
+        formData.append('pets_comp', petsChecked);
+        formData.append('description', description);
+        formData.append('petPhoto', petPhotoFile);
+        console.log("🚀 ~ file: PetForm.js ~ line 55 ~ handleSubmit ~ petPhotoFile", petPhotoFile)
+        if(petId===null){
+          ps.addPet(formData).then((res) => {
           if (res.status === 200) {
             console.log("🚀 success  !!!!");
           }
           }).catch((e) => {
             console.log(e);
-            console.log("🚀 ERROR  !!!!");
-            
-        
-    
-          });
+          }).then(reload);
+        }
+        else{
+          ps.putPet(petId, formData).then((res) => {
+            if (res.status === 200) {
+              console.log("🚀 success  !!!!");
+            }
+            }).catch((e) => {
+              console.log(e);
+            }).then(reload);
+        }  
+      }
+      toggleIt();
+     
     };
   
   
@@ -68,23 +121,24 @@ function PetForm({toggleModal}) {
             onOpen={() => setIsOpen(true)}
             open={isOpen}
         >
-          <form className="pet-form" encType="multipart/form"> 
+          <form className="pet-form" encType="multipart/form-data"> 
             <h2>Add pet</h2>
             <TextField
-            required
-            id="filled-required"
-            label="Name"
-            variant="outlined"
-            size="small"
-            onChange={(newValue) => {
-              setName(newValue);
-            }}
+              required
+              id="filled-required"
+              label="Name"
+              variant="outlined"
+              size="small"
+              value={name} 
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
             />
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 views={['year', 'month']}
                 label="Year and Month"
-                minDate={new Date('2012-03-01')}
+                minDate={new Date('2000-03-01')}
                 maxDate={Date.now()}
                 value={dob}
                 onChange={(newValue) => {
@@ -95,8 +149,8 @@ function PetForm({toggleModal}) {
             </LocalizationProvider>  
             <FormGroup>
               <p>Compatibility:</p>
-              <FormControlLabel control={<Checkbox  />} label="Kids" />
-              <FormControlLabel control={<Checkbox />} label="Other pets"  />
+              <FormControlLabel control={<Checkbox onChange={handleKidsCheckbox}/>} label="Kids" />
+              <FormControlLabel control={<Checkbox onChange={handlePetsCheckbox}  />} label="Other pets"  />
             </FormGroup>
             <div className="pet-form__input-group">
               <FormControl required variant="outlined" sx={{ m: 1, minWidth: 120 }}>
@@ -139,17 +193,29 @@ function PetForm({toggleModal}) {
               variant="outlined"
               rows={3}
               size="small"
-              onChange={(newValue) => {
-                setDescription(newValue);
+              value={description} 
+              onChange={(e) => {
+                setDescription(e.target.value);
               }}
             />
-            <input
-              accept="image/*"
-              className="fileimput"
-              id="raised-button-file"
-              multiple
-              type="file"
-            />
+            <Dropzone onDrop={acceptedFiles => {
+                  console.log(acceptedFiles[0]);
+                  setPetPhotoFile(acceptedFiles[0]);
+                  setPetPhotoFilename([acceptedFiles[0].name]);
+                }
+              }
+            >
+            {({ getRootProps, getInputProps }) => (
+              <section>
+                <div className="dropzone" {...getRootProps()}>
+                  <input {...getInputProps()} type="file" name="petPhoto" id="petPhoto" />
+                  
+                    <p>Drag and drop some files here, or click to select files</p>
+                  
+                </div>
+              </section>
+            )}
+          </Dropzone>
             <Button onClick={toggleIt}>Cancel</Button>
             <Button onClick={handleSubmit}>Guardar</Button>
           </form>  

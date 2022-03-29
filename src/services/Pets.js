@@ -20,12 +20,30 @@ export default class PetService {
         }
         return axios.post(baseURL , body, config);
     }
-  /*  getPetById(id) {
+    getPetById(id) {
       /*const config = {     
             headers: { 
                 Authorization: `Bearer ${token}`
              }
+        }*/
+        return axios.get(baseURL + id);
+    }
+
+    deletePetById(id) {
+        /*const config = {     
+              headers: { 
+                  Authorization: `Bearer ${token}`
+               }
+          }*/
+          return axios.delete(baseURL + id);
+      }
+
+      putPet(id, body) {
+        const config = {     
+            headers: { 
+                'content-type': 'multipart/form-data'
+             }
         }
-        return axios.get(baseURL + "email/" + email, config);
-    }*/
+        return axios.put(baseURL + id , body, config);
+      }
 }

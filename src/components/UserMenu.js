@@ -12,10 +12,10 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { Link } from 'react-router-dom';
-const pages = ["Pets", "Adoption Requests", "Users"];
+
 const settings = ["Profile", "Account", "Dashboard"];
 
-export const AdminMenu = () => {
+export const UserMenu = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -91,12 +91,12 @@ export const AdminMenu = () => {
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                        
                             <Button  onClick={handleCloseNavMenu} sx={{ my: 2, color: "white", display: "block" }}>
-                                <Link to="/admin">
+                                <Link to="/">
                                         <Typography textAlign="center">Home</Typography>
                                 </Link>
                             </Button>
                             <Button  onClick={handleCloseNavMenu} sx={{ my: 2, color: "white", display: "block" }}>
-                                <Link to="/admin/pets">
+                                <Link to="/pets">
                                         <Typography textAlign="center">Pets</Typography>
                                 </Link>
                             </Button>

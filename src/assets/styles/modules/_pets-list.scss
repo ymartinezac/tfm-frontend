@@ -1,0 +1,14 @@
+.pets-list{
+    margin: 20px 10%;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 10px;
+    column-gap: 10px;
+    justify-content: space-between;
+
+    h2 {
+        width: 100%;
+        text-align: center;
+    }
+
+}
