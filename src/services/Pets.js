@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = process.env.REACT_APP_API_URL + "pets/";
+const baseURL = "http://localhost:3001/pets/";
 
 
 export default class PetService {
