@@ -14,8 +14,9 @@ import TextField from '@mui/material/TextField';
 import React from "react";
 import Dropzone from 'react-dropzone';
 import PetService from '../services/Pets';
-
-function PetForm({toggleModal, petId}) {
+import GenderSelect from './FormFields/GenderSelect';
+import NameTextfield from './FormFields/NameTextfield';
+function PetForm({toggleModal, petId, setPetId}) {
     const ps = new PetService();
     const [isOpen, setIsOpen] = React.useState(true);
     const [species, setSpecies] = React.useState('');
@@ -45,14 +46,24 @@ function PetForm({toggleModal, petId}) {
           console.log('🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀');
         });
       }
+
+      return () => {
+        setPetId(null);
+    };
       
-    }, [petId, ps]);
+    }, [petId]);
 
     const reload=()=>window.location.reload();
+
     const handleSpeciesChange = (event) => {
       setSpecies(event.target.value);
     };
-    const handleGenderChange = (event) => {
+
+    const handleNameChange = (event) => {     
+      setName(event.target.value);
+    };
+
+    const handleGenderChange = (event) => {     
       setGender(event.target.value);
     };
 
@@ -66,7 +77,6 @@ function PetForm({toggleModal, petId}) {
 
     const toggleIt = () => {
         setIsOpen(!isOpen);
-        
         toggleModal();
         
     }
@@ -123,17 +133,9 @@ function PetForm({toggleModal, petId}) {
         >
           <form className="pet-form" encType="multipart/form-data"> 
             <h2>Add pet</h2>
-            <TextField
-              required
-              id="filled-required"
-              label="Name"
-              variant="outlined"
-              size="small"
-              value={name} 
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
-            />
+            <NameTextfield handleNameChange={handleNameChange} name={name} />
+            <GenderSelect handleGenderChange={handleGenderChange} gender={gender}/>
+            
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 views={['year', 'month']}
@@ -168,22 +170,7 @@ function PetForm({toggleModal, petId}) {
                   <MenuItem value={'other'} size="small">Other</MenuItem>
                 </Select>
               </FormControl>
-              <FormControl  required variant="outlined" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-outlined-label" size="small">Gender</InputLabel>
-                <Select
-                  required
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={gender}
-                  onChange={handleGenderChange}
-                  label="Gender"
-                  size="small"
-                >
-                  <MenuItem value={'male'}>Male</MenuItem>
-                  <MenuItem value={'female'}>Female</MenuItem>
-                  <MenuItem value={'other'}>Other</MenuItem>
-                </Select>
-              </FormControl>
+              
             </div>
             <TextField
               required

@@ -127,7 +127,7 @@ export default function PetsTable() {
       </Button>
      
       {openModal &&
-                <PetForm toggleModal={handleOpenModal} petId={modalPetId} />
+                <PetForm toggleModal={handleOpenModal} petId={modalPetId} setPetId={setModalPetId} />
       }
     </div>
     

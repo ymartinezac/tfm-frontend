@@ -9,6 +9,7 @@ function Home() {
         <div className="home">
             <header>
                 <UserMenu />
+                
             </header>
             <body>
                 <Routes>

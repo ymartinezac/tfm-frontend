@@ -1,3 +1,4 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import MenuIcon from "@mui/icons-material/Menu";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
@@ -12,13 +13,15 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { Link } from 'react-router-dom';
-
+import LoginButton from "./Login";
+import LogoutButton from "./Logout";
 const settings = ["Profile", "Account", "Dashboard"];
+
 
 export const UserMenu = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+    const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -34,12 +37,29 @@ export const UserMenu = () => {
         setAnchorElUser(null);
     };
 
+    React.useEffect(() => {
+        const getToken = async () => {
+          try {
+            const accessToken = await getAccessTokenSilently({
+                audience: "https://tfm-backend.com",
+                scope: "read:pets",
+            });
+          } catch (e) {
+            console.log(e.message);
+          }
+        };
+      
+        getToken();
+      }, [getAccessTokenSilently, user?.sub]);
+
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Typography variant="h6" noWrap component="div" sx={{ mr: 2, display: { xs: "none", md: "flex" } }}>
                         <img className="logo" src={process.env.PUBLIC_URL + "/logo.png"} />
+
+                        
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -104,11 +124,17 @@ export const UserMenu = () => {
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                            </IconButton>
-                        </Tooltip>
+                        
+                                { isAuthenticated ? 
+                                    <Tooltip title="Open settings">
+                                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                            <Avatar alt={user.name} src={user.picture} />  
+                                        </IconButton>
+                                    </Tooltip>
+                                    : <LoginButton />
+                                }
+                                
+                           
                         <Menu
                             sx={{ mt: "45px" }}
                             id="menu-appbar"
@@ -130,6 +156,10 @@ export const UserMenu = () => {
                                     <Typography textAlign="center">{setting}</Typography>
                                 </MenuItem>
                             ))}
+
+                            <MenuItem key={settings.length} onClick={handleCloseUserMenu}>
+                                 <LogoutButton /> 
+                            </MenuItem>
                         </Menu>
                     </Box>
                 </Toolbar>

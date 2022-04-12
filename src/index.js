@@ -1,3 +1,4 @@
+import { Auth0Provider } from "@auth0/auth0-react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -5,6 +6,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import App from "./App";
 import "./assets/styles/main.scss";
 import reportWebVitals from "./reportWebVitals";
+
 
 const theme = createTheme({
     palette: {
@@ -19,13 +21,19 @@ const theme = createTheme({
 });
 ReactDOM.render(
     <React.StrictMode>
-        <Router>
-        
+        <Auth0Provider
+            domain={process.env.REACT_APP_AUTH0_DOMAIN}
+            clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
+            redirectUri={window.location.origin}
+            audience="https://tfm-backend.com"
+            scope="read:current_user update:current_user_metadata read:pets"
+        >
+            <Router>
                 <ThemeProvider theme={theme}>
                     <App />
-                </ThemeProvider>
-           
-        </Router>
+                </ThemeProvider> 
+            </Router>
+        </Auth0Provider>
     </React.StrictMode>,
     document.getElementById("root")
 );
