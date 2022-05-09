@@ -1,25 +1,12 @@
-
-
-import { Route, Routes } from "react-router-dom";
-import PetsList from "./PetsList";
-import { UserMenu } from "./UserMenu";
 function Home() {
-  
     return (
         <div className="home">
-            <header>
-                <UserMenu />
-                
-            </header>
+            <header></header>
             <body>
-                <Routes>
-                    <Route path="pets" element={<PetsList />} />
-                    <Route index element={<PetsList />} />
-                </Routes>
+                <p>this is home</p>
             </body>
-          
         </div>
-    );
+    )
 }
 
-export default Home;
+export default Home

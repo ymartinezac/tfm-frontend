@@ -1,25 +1,16 @@
-
-
-import { Route, Routes } from "react-router-dom";
-import { AdminMenu } from "./AdminMenu";
-import PetsTable from "./PetsTable";
+import { Route, Routes } from 'react-router-dom'
+import PetsTable from './PetsTable'
 function AdminDashboard() {
-  
     return (
         <div className="admin-dashboard">
-            <header>
-                <AdminMenu />
-            </header>
+            <header></header>
             <body>
-                
-                    <Routes>
-                        <Route path="pets" element={<PetsTable />} />
-                    </Routes>
-              
+                <Routes>
+                    <Route path="pets" element={<PetsTable />} />
+                </Routes>
             </body>
-          
         </div>
-    );
+    )
 }
 
-export default AdminDashboard;
+export default AdminDashboard
