@@ -20,6 +20,7 @@ export const UserMenu = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null)
     const [anchorElUser, setAnchorElUser] = React.useState(null)
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0()
+
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget)
     }
@@ -54,17 +55,19 @@ export const UserMenu = () => {
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-                    >
-                        <img
-                            className="logo"
-                            src={process.env.PUBLIC_URL + '/logo.png'}
-                        />
-                    </Typography>
+                    <Link to="/">
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+                        >
+                            <img
+                                className="logo"
+                                src={process.env.PUBLIC_URL + '/logo.png'}
+                            />
+                        </Typography>
+                    </Link>
 
                     <Box
                         sx={{
@@ -100,20 +103,20 @@ export const UserMenu = () => {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            <MenuItem onClick={handleCloseNavMenu}>
-                                <Link to="/">
+                            <Link to="/">
+                                <MenuItem onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">
                                         Home
-                                    </Typography>
-                                </Link>
-                            </MenuItem>
-                            <MenuItem onClick={handleCloseNavMenu}>
-                                <Link to="pets">
+                                    </Typography>{' '}
+                                </MenuItem>
+                            </Link>
+                            <Link to="pets">
+                                <MenuItem onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">
                                         Pets
                                     </Typography>
-                                </Link>
-                            </MenuItem>
+                                </MenuItem>
+                            </Link>
                         </Menu>
                     </Box>
                     <Typography

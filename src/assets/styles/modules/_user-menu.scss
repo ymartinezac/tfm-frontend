@@ -3,3 +3,9 @@
 .usermenu__link {
     color: $darkBlue;
 }
+
+@media (max-width: 900px) {
+    a {
+        color: $darkBlue;
+    }
+}
