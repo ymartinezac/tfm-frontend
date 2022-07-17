@@ -4,28 +4,27 @@ import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import React from 'react'
+import Pet from '../models/pet.interface'
 import PetService from '../services/pets'
 function PetsList() {
     const ps = new PetService()
-    const [pets, setPets] = React.useState([])
+    const [pets, setPets] = React.useState<Pet[]>([])
     const { getAccessTokenSilently } = useAuth0()
 
     React.useEffect(() => {
-        ;(async () => {
-            try {
-                const token = await getAccessTokenSilently({
-                    audience: 'https://tfm-backend.com',
-                    scope: 'read:pets',
-                })
-                const response = await ps.getPets(token).then((res) => {
-                    setPets(res.data)
-                })
-                setPets(await response.json())
-            } catch (e) {
-                console.error(e)
-            }
-        })()
-    }, [getAccessTokenSilently])
+        ps.getPets().then((res) => {
+            setPets(res.data)
+        })
+
+        try {
+            // const token = await getAccessTokenSilently({
+            //     audience: 'https://tfm-backend.com',
+            //     scope: 'read:pets',
+            // })
+        } catch (e) {
+            console.error(e)
+        }
+    }, [])
     /* React.useEffect(() => {
         ps.getPets().then((res) => {
             setPets(res.data)

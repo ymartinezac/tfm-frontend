@@ -1,11 +1,8 @@
-import Profile from './Profile'
-
 function Home() {
     return (
-        <body>
+        <div>
             <p>this is home</p>
-            <Profile />
-        </body>
+        </div>
     )
 }
 

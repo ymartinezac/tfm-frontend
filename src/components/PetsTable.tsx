@@ -3,18 +3,19 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid'
 import React from 'react'
 import PetService from '../services/pets'
-import PetForm from './PetForm'
+//import PetForm from './PetForm'
 const moment = require('moment')
 
 export default function PetsTable() {
     const ps = new PetService()
     const reload = () => window.location.reload()
     const [pets, setPets] = React.useState([])
-    const [modalPetId, setModalPetId] = React.useState(null)
+    const [modalPetId, setModalPetId] = React.useState<string | null>(null)
     const [openModal, setOpenModal] = React.useState(false)
+    const [token, settoken] = React.useState('') // to be removed and use actual token
     const [sortModel, setSortModel] = React.useState([
         {
             field: 'last_modified',
@@ -26,11 +27,11 @@ export default function PetsTable() {
         setOpenModal(!openModal)
     }
 
-    const handleDelete = (id) => {
-        ps.deletePetById(id).then(console.log).then(reload)
+    const handleDelete = (id: string, token: string) => {
+        ps.deletePetById(id, token).then(console.log).then(reload)
     }
 
-    const handleEdit = (id) => {
+    const handleEdit = (id: string) => {
         setModalPetId(id)
         setOpenModal(!openModal)
     }
@@ -46,32 +47,27 @@ export default function PetsTable() {
         })
     }, [])
 
-    const columns = [
+    const columns: GridColDef[] = [
         {
             field: 'filename',
             headerName: '',
 
-            renderCell: (params) => {
-                if (params.value) {
+            renderCell: (params: GridValueGetterParams<string>) => {
+                if ((params as GridValueGetterParams).value) {
                     return (
                         <Tooltip
                             title={
                                 <img
                                     height="150"
                                     width="150"
-                                    src={
-                                        process.env.REACT_APP_API_URL +
-                                        params.value
-                                    }
+                                    src={process.env.REACT_APP_API_URL + params.value}
                                 />
                             }
                         >
                             <img
                                 height="40"
                                 width="40"
-                                src={
-                                    process.env.REACT_APP_API_URL + params.value
-                                }
+                                src={process.env.REACT_APP_API_URL + params.value}
                             />
                         </Tooltip>
                     )
@@ -85,7 +81,7 @@ export default function PetsTable() {
         {
             field: 'dob',
             headerName: 'Age',
-            renderCell: (params) => {
+            renderCell: (params: GridValueGetterParams<Number>) => {
                 if (params.value) {
                     return <p>{moment(params.value).fromNow(true)}</p>
                 } else return null
@@ -126,21 +122,25 @@ export default function PetsTable() {
             headerName: '',
             width: 100,
             align: 'left',
-            renderCell: (params) => {
+            renderCell: (params: GridValueGetterParams<string>) => {
                 if (params.value) {
                     return (
                         <>
                             {' '}
                             <IconButton
                                 ria-label="delete pet"
-                                onClick={() => handleDelete(params.value)}
+                                onClick={() => handleDelete(params.value, token)}
                                 component="span"
                             >
-                                <DeleteIcon size="small" />
+                                <DeleteIcon />
                             </IconButton>
-                            {/* <IconButton ria-label="edit pet"  onClick={() => handleEdit(params.value)} component="span">
-      <EditIcon size="small" />
-      </IconButton>*/}{' '}
+                            {/* <IconButton
+                                ria-label="edit pet"
+                                onClick={() => handleEdit(params.value)}
+                                component="span"
+                            >
+                                <EditIcon  />
+                            </IconButton> */}{' '}
                         </>
                     )
                 } else return null
@@ -157,8 +157,8 @@ export default function PetsTable() {
                 getRowId={(row) => row._id}
                 pageSize={6}
                 rowsPerPageOptions={[6]}
-                sortModel={sortModel}
-                onSortModelChange={(model) => setSortModel(model)}
+                // sortModel={sortModel}
+                //  onSortModelChange={(model) => setSortModel(model)}
             />
 
             <Button
@@ -170,13 +170,13 @@ export default function PetsTable() {
                 Add Pet
             </Button>
 
-            {openModal && (
+            {/* {openModal && (
                 <PetForm
                     toggleModal={handleOpenModal}
                     petId={modalPetId}
                     setPetId={setModalPetId}
                 />
-            )}
+            )} */}
         </div>
     )
 }

@@ -17,14 +17,14 @@ import LoginButton from './Login'
 import LogoutButton from './Logout'
 
 export const UserMenu = () => {
-    const [anchorElNav, setAnchorElNav] = React.useState(null)
-    const [anchorElUser, setAnchorElUser] = React.useState(null)
+    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
+    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
     const { user, isAuthenticated, getAccessTokenSilently } = useAuth0()
 
-    const handleOpenNavMenu = (event) => {
+    const handleOpenNavMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorElNav(event.currentTarget)
     }
-    const handleOpenUserMenu = (event) => {
+    const handleOpenUserMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorElUser(event.currentTarget)
     }
 
@@ -39,17 +39,18 @@ export const UserMenu = () => {
     React.useEffect(() => {
         const getToken = async () => {
             try {
-                const accessToken = await getAccessTokenSilently({
-                    audience: 'https://tfm-backend.com',
-                    scope: 'read:pets',
-                })
+                // const accessToken = await getAccessTokenSilently({
+                //     audience: 'https://tfm-backend.com',
+                //     scope: 'read:pets',
+                // })
+                console.log('skdabkb')
             } catch (e) {
-                console.log(e.message)
+                //console.log(e.message)
             }
         }
 
         getToken()
-    }, [getAccessTokenSilently, user?.sub])
+    }, [user?.sub])
 
     return (
         <AppBar position="static">
@@ -62,10 +63,7 @@ export const UserMenu = () => {
                             component="div"
                             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                         >
-                            <img
-                                className="logo"
-                                src={process.env.PUBLIC_URL + '/logo.png'}
-                            />
+                            <img className="logo" src={process.env.PUBLIC_URL + '/logo.png'} />
                         </Typography>
                     </Link>
 
@@ -80,7 +78,7 @@ export const UserMenu = () => {
                             aria-label="account of current user"
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
-                            onClick={handleOpenNavMenu}
+                            onClick={() => handleOpenNavMenu}
                             color="inherit"
                         >
                             <MenuIcon />
@@ -105,16 +103,12 @@ export const UserMenu = () => {
                         >
                             <Link to="/">
                                 <MenuItem onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">
-                                        Home
-                                    </Typography>{' '}
+                                    <Typography textAlign="center">Home</Typography>{' '}
                                 </MenuItem>
                             </Link>
                             <Link to="pets">
                                 <MenuItem onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">
-                                        Pets
-                                    </Typography>
+                                    <Typography textAlign="center">Pets</Typography>
                                 </MenuItem>
                             </Link>
                         </Menu>
@@ -128,10 +122,7 @@ export const UserMenu = () => {
                             display: { xs: 'flex', md: 'none' },
                         }}
                     >
-                        <img
-                            className="logo"
-                            src={process.env.PUBLIC_URL + '/logo.png'}
-                        />
+                        <img className="logo" src={process.env.PUBLIC_URL + '/logo.png'} />
                     </Typography>
                     <Box
                         sx={{
@@ -160,14 +151,8 @@ export const UserMenu = () => {
                     <Box sx={{ flexGrow: 0 }}>
                         {isAuthenticated ? (
                             <Tooltip title="Open settings">
-                                <IconButton
-                                    onClick={handleOpenUserMenu}
-                                    sx={{ p: 0 }}
-                                >
-                                    <Avatar
-                                        alt={user.name}
-                                        src={user.picture}
-                                    />
+                                <IconButton onClick={() => handleOpenUserMenu} sx={{ p: 0 }}>
+                                    <Avatar alt={user?.name} src={user?.picture} />
                                 </IconButton>
                             </Tooltip>
                         ) : (
@@ -191,29 +176,16 @@ export const UserMenu = () => {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            <MenuItem
-                                key="Account"
-                                onClick={handleCloseUserMenu}
-                            >
-                                <Typography textAlign="center">
-                                    Account
-                                </Typography>
+                            <MenuItem key="Account" onClick={handleCloseUserMenu}>
+                                <Typography textAlign="center">Account</Typography>
                             </MenuItem>
-                            <MenuItem
-                                key="Dashboard"
-                                onClick={handleCloseUserMenu}
-                            >
+                            <MenuItem key="Dashboard" onClick={handleCloseUserMenu}>
                                 <Link to="/admin" className="usermenu__link">
-                                    <Typography textAlign="center">
-                                        Dashboard
-                                    </Typography>
+                                    <Typography textAlign="center">Dashboard</Typography>
                                 </Link>
                             </MenuItem>
 
-                            <MenuItem
-                                key="Logout"
-                                onClick={handleCloseUserMenu}
-                            >
+                            <MenuItem key="Logout" onClick={handleCloseUserMenu}>
                                 <LogoutButton />
                             </MenuItem>
                         </Menu>
