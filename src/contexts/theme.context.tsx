@@ -1,6 +1,7 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Props from '../models/props.interface'
 import Theme from '../models/theme.interface'
+
 const ThemeContext = ({ children }: Props) => {
     const lightTheme: Theme = {
         palette: {
@@ -15,7 +16,7 @@ const ThemeContext = ({ children }: Props) => {
 
     const theme = createTheme(lightTheme)
 
-    return <ThemeProvider theme={lightTheme}>{children}</ThemeProvider>
+    return <ThemeProvider theme={theme}>{children}</ThemeProvider>
 }
 
 export default ThemeContext

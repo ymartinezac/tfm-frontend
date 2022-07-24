@@ -43,7 +43,6 @@ export const UserMenu = () => {
                 //     audience: 'https://tfm-backend.com',
                 //     scope: 'read:pets',
                 // })
-                console.log('skdabkb')
             } catch (e) {
                 //console.log(e.message)
             }

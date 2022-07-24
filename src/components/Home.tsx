@@ -1,8 +1,10 @@
-function Home() {
+import Profile from './Profile'
+const Home = () => {
     return (
-        <div>
+        <>
+            <Profile />
             <p>this is home</p>
-        </div>
+        </>
     )
 }
 
