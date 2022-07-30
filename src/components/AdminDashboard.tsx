@@ -4,11 +4,11 @@ function AdminDashboard() {
     return (
         <div className="admin-dashboard">
             <header></header>
-            <body>
+            <>
                 <Routes>
                     <Route path="pets" element={<PetsTable />} />
                 </Routes>
-            </body>
+            </>
         </div>
     )
 }

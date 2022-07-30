@@ -19,12 +19,14 @@ import LogoutButton from './Logout'
 export const UserMenu = () => {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
-    const { user, isAuthenticated, getAccessTokenSilently } = useAuth0()
+    const { user, isAuthenticated, getAccessTokenSilently, getIdTokenClaims } = useAuth0()
+    const [isAuthorized, setIsAuthorized] = React.useState(false)
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorElNav(event.currentTarget)
     }
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+        console.log('🚀 ~ file: UserMenu.tsx ~ line 29 ~ handleOpenUserMenu ~ event', event)
         setAnchorElUser(event.currentTarget)
     }
 
@@ -39,17 +41,17 @@ export const UserMenu = () => {
     React.useEffect(() => {
         const getToken = async () => {
             try {
-                // const accessToken = await getAccessTokenSilently({
-                //     audience: 'https://tfm-backend.com',
-                //     scope: 'read:pets',
-                // })
+                const accessToken = await getAccessTokenSilently({
+                    audience: 'https://tfm-backend.com',
+                    scope: 'read:pets',
+                })
             } catch (e) {
-                //console.log(e.message)
+                // console.log(e?.message)
             }
         }
 
         getToken()
-    }, [user?.sub])
+    }, [])
 
     return (
         <AppBar position="static">
@@ -150,7 +152,7 @@ export const UserMenu = () => {
                     <Box sx={{ flexGrow: 0 }}>
                         {isAuthenticated ? (
                             <Tooltip title="Open settings">
-                                <IconButton onClick={() => handleOpenUserMenu} sx={{ p: 0 }}>
+                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                     <Avatar alt={user?.name} src={user?.picture} />
                                 </IconButton>
                             </Tooltip>
@@ -183,7 +185,6 @@ export const UserMenu = () => {
                                     <Typography textAlign="center">Dashboard</Typography>
                                 </Link>
                             </MenuItem>
-
                             <MenuItem key="Logout" onClick={handleCloseUserMenu}>
                                 <LogoutButton />
                             </MenuItem>
